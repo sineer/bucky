@@ -17,6 +17,7 @@ import logging
 import os
 import struct
 
+import bucky.names as names
 from bucky.errors import ConfigError, ProtocolError
 from bucky.udpserver import UDPServer
 
@@ -239,14 +240,8 @@ class CollectDConverter(object):
             log.exception("Exception in sample handler  %s (%s):" % (
                 sample["plugin"], handler))
             return
-        host = sample.get("host", "")
-        return (
-            host,
-            name,
-            sample["value_type"],
-            sample["value"],
-            int(sample["time"])
-        )
+        stat = names.statname(sample.get("host", ""), name, "collectd")
+        return stat, name, sample["value_type"], sample["value"], int(sample["time"])
 
     def _load_converters(self, cfg):
         cfg_conv = cfg.collectd_converters

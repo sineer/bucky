@@ -20,6 +20,7 @@ import re
 import threading
 import time
 
+import bucky.names as names
 import bucky.udpserver as udpserver
 
 
@@ -91,6 +92,7 @@ class StatsDHandler(threading.Thread):
         for k, v in self.gauges.iteritems():
             stat = "stats.gauges.%s" % k
             self.enqueue(stat, v, stime)
+            self.gauges[k] = 0
             ret += 1
         return ret
 
@@ -153,20 +155,15 @@ class StatsDHandler(threading.Thread):
             self.bad_line()
 
     def handle_gauge(self, key, fields):
-        valstr = fields[0] or "0"
         try:
-            val = float(valstr)
+            val = int(fields[0] or 0)
         except:
             self.bad_line()
             return
-        delta = valstr[0] in ["+", "-"]
         with self.lock:
             if key not in self.gauges:
                 self.gauges[key] = 0
-            if delta:
-                self.gauges[key] = self.gauges[key] + val
-            else:
-                self.gauges[key] = val
+            self.gauges[key] = val
 
     def handle_counter(self, key, fields):
         rate = 1.0

@@ -94,7 +94,8 @@ class MetricsDParser(object):
             value, data = self.parse_number(data)
         else:
             value = None
-        stat = names.statname(hostname, name.split("."))
+
+        stat = names.statname(hostname, name.split("."), "metricsd")
         cmd = MetricsDCommand(stat, mtype, action, value)
         return cmd, data
 

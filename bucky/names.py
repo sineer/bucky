@@ -56,11 +56,15 @@ def strip_duplicates(parts):
     return ret
 
 
-def statname(host, name):
-    nameparts = name.split('.')
+def statname(host, nameparts, source=None):
     parts = []
     if cfg.name_prefix:
         parts.append(cfg.name_prefix)
+    if source:
+        if getattr(cfg, "prefix_source_name_%s", False):
+            parts.append(getattr(cfg, "prefix_source_name_%s" % source, False))
+        elif cfg.prefix_source_name:
+            parts.append(source)
     if host:
         parts.extend(hostname(host))
     parts.extend(nameparts)
