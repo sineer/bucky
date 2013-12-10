@@ -29,13 +29,13 @@ graphite_pickle_buffer_size = 500
 
 full_trace = False
 
-prefix_source_name = False
+prefix_source_name = True
 prefix_source_name_collectd = "collectd"
 
 name_prefix = None
 name_postfix = None
 name_replace_char = '_'
-name_strip_duplicates = True
+name_strip_duplicates = False
 name_host_trim = []
 
 custom_clients = []

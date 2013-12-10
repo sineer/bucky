@@ -240,8 +240,10 @@ class CollectDConverter(object):
             log.exception("Exception in sample handler  %s (%s):" % (
                 sample["plugin"], handler))
             return
-        stat = names.statname(sample.get("host", ""), name, "collectd")
-        return stat, name, sample["value_type"], sample["value"], int(sample["time"])
+        host = sample.get("host", "")
+        stat = names.statname(host, name, "collectd")
+        #log.info("CollectDConverter.convert statname: %s" % stat);
+        return host, stat, sample["value_type"], sample["value"], int(sample["time"])
 
     def _load_converters(self, cfg):
         cfg_conv = cfg.collectd_converters
@@ -288,6 +290,7 @@ class CollectDServer(UDPServer):
                 if sample is None:
                     continue
                 host, name, vtype, val, time = sample
+                host = "" # ERR, DON'T APPEND HOSTNAME!
                 if not name.strip():
                     continue
                 val = self.calculate(host, name, vtype, val, time)
