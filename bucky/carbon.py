@@ -101,7 +101,7 @@ class PickleClient(CarbonClient):
 
     def send(self, host, name, value, mtime):
         stat = names.statname(host, name)
-        log.info("PickleClient send host: %s  name: %s   stat: %s" % (host, name, stat));
+        #log.info("PickleClient send host: %s  name: %s   stat: %s" % (host, name, stat));
         self.buffer.append((stat, (mtime, value)))
         if len(self.buffer) >= self.buffer_size:
             self.transmit()

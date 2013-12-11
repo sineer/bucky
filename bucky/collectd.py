@@ -259,7 +259,7 @@ class CollectDConverter(object):
 
     def _add_converter(self, name, inst, source="unknown"):
         if name not in self.converters:
-            log.info("Converter: %s from %s" % (name, source))
+            #log.info("Converter: %s from %s" % (name, source))
             self.converters[name] = inst
             return
         kpriority = getattr(inst, "PRIORITY", 0)
